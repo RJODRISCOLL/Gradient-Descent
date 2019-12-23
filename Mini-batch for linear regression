@@ -1,0 +1,51 @@
+# import relevant packages
+import numpy as np
+import sklearn
+
+# Mini batch gradient descent is comparable to stochastic GD and has many of the same benefits. The primary difference
+# is that in the MB GD algorithm a batch of samples are used, thus the reduction in the cost may be smoother.
+# The main limitation is that there is the potential to get stuck in local minima (more than sgd).
+
+
+# Data
+np.random.seed(150)
+
+X = 2 * np.random.rand(100, 1)
+y = 20 + 7 * X + np.random.randn(100, 1) # y is 20 + 7 * X  + noise
+X_beta = np.c_[np.ones((100, 1)), X]  # add the intercept of 1 to each observation
+theta_best = np.linalg.inv(X_beta.T.dot(X_beta)).dot(X_beta.T).dot(y) # we compute the inverse of the matrix using the lin alg inv function, the matrix is the dot product
+
+# Predictions
+X_new = np.array([[0], [2]]) #
+X_new_b = np.c_[np.ones((2,1)), X_new] # append to X_new
+
+# params req
+theta_list = []
+n_iterations = 200
+m_size = 20
+theta = np.random.randn(2,1)  # random initialization
+m = len(X_beta)
+
+t0, t1 = 100, 1000
+def learning_schedule(t):
+    return t0 / (t + t1)
+
+# run iter
+t = 0
+for epoch in range(n_iterations):
+    shuffled_indices = np.random.permutation(m)
+    X_b_shuffled = X_beta[shuffled_indices]
+    y_shuffled = y[shuffled_indices]
+    for i in range(0, m, m_size):
+        t += 1
+        xi = X_beta[i:i+m_size]
+        yi = y[i:i+m_size]
+        gradients = 2/m_size * xi.T.dot(xi.dot(theta) - yi) # compute the gradient with T
+        eta = learning_schedule(t) # eta
+        theta = theta - eta * gradients # ud theta
+        theta_list.append(theta) # add to res
+
+preds_MB = X_new_b.dot(theta)
+
+print('theta MB: ', theta)
+print('preds: ', preds_MB)

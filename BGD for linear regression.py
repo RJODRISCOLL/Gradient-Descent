@@ -1,7 +1,4 @@
 # import relevant packages
-import pandas as pd
-import sys
-import os
 import numpy as np
 import sklearn
 
@@ -36,7 +33,7 @@ for iteration in range(n_iterations):
     gradients = 2 / m * X_beta.T.dot(X_beta.dot(theta) - y)
     theta = theta - eta * gradients
 
-preds_SGD = X_new_b.dot(theta)
+preds_BGD = X_new_b.dot(theta)
 
-print('theta sgd: ', theta)
-print('preds: ', preds_SGD)
+print('theta bgd: ', theta)
+print('preds: ', preds_BGD)

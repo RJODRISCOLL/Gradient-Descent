@@ -1,9 +1,5 @@
 # import relevant packages
-import pandas as pd
-import sys
-import os
 import numpy as np
-import sklearn
 
 # Standard linear regression models compute a linear function of a ste of predictor variables(x1...xn) on the outcome
 # variable (y). This is computed by modelling a combined sum of each of the predictor variables with an additional
